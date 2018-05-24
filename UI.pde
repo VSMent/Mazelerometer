@@ -1,5 +1,5 @@
 class UI {
-  int border = 1; //<>// //<>// //<>//
+  int border = 1;
 
   int leftFullWidth, leftFullHeight, leftInnerWidth, leftInnerHeight, leftOuterX, leftInnerX, leftOuterY, leftInnerY, leftOutline;
   int mainFullWidth, mainFullHeight, mainInnerWidth, mainInnerHeight, mainOuterX, mainInnerX, mainOuterY, mainInnerY, mainOutline;
@@ -35,13 +35,13 @@ class UI {
 
     helpButton.setWidth(eWidth)
       .setHeigth(eHeight)
-      .setX(hMargin) //<>// //<>//
+      .setX(hMargin)
       .setY(vMargin*3+eHeight*2)
       .show(click);
 
     exitButton.setWidth(eWidth)
-      .setHeigth(eHeight) //<>// //<>//
-      .setX(hMargin) //<>// //<>//
+      .setHeigth(eHeight)
+      .setX(hMargin)
       .setY(vMargin*4+eHeight*3)
       .show(click);
   }
@@ -57,8 +57,8 @@ class UI {
     if (type == 1) {  // error
       headerLabel.setText("Error");
       infoBigLabel.setTextSize(80)
-        .setTextColor(#cf0808) //<>// //<>//
-        .setText("Error"); //<>// //<>//
+        .setTextColor(#cf0808)
+        .setText("Error");
       infoExitButton.setText("Exit");
     } else {  // help
       headerLabel.setText("How to play?");
@@ -67,32 +67,32 @@ class UI {
         .setText("You need to find exit of the maze and lead ball there.\n"+
         "At at game start you can see maze map, but it will dissapear soon.\n"+
         "You can show map again, but only several times (and for short time)\n"+
-        "Your goal and ball are always highlighted on the map.\n"+ //<>//
-        "The sooner you finish the better."); //<>//
-      infoExitButton.setText("Back"); //<>// //<>//
-    } //<>// //<>//
+        "Your goal and ball are always highlighted on the map.\n"+
+        "The sooner you finish the better.");
+      infoExitButton.setText("Back");
+    }
 
     headerLabel.setWidth(eWidth*2)
       .setHeigth(eHeight)
       .setX(hMargin-(eWidth/2))
-      .setY(vMargin*1+eHeight*0) //<>// //<>//
-      .show(false); //<>// //<>//
+      .setY(vMargin*1+eHeight*0)
+      .show(false);
 
     infoBigLabel.setWidth(eWidth*2)
-      .setHeigth(eHeight*2+vMargin) //<>// //<>// //<>//
-      .setX(hMargin-(eWidth/2)) //<>// //<>// //<>//
-      .setY(vMargin*2+eHeight*1) //<>// //<>//
+      .setHeigth(eHeight*2+vMargin)
+      .setX(hMargin-(eWidth/2))
+      .setY(vMargin*2+eHeight*1)
       .show(false);
 
     infoExitButton.setWidth(eWidth)
-      .setHeigth(eHeight) //<>//
-      .setX(hMargin) //<>//
+      .setHeigth(eHeight)
+      .setX(hMargin)
       .setY(vMargin*4+eHeight*3)
       .show(click);
   }
 
   void drawPauseScreen(int type) {
-    drawSimpleBorder(); //<>// //<>//
+    drawSimpleBorder();
     // controll elements values
     int vMargin = Math.round((height-border*2)/13);  // 4 elements with 5 margins (element weight = 2, margin -- 1) 4*2 + 5*1 = 8 + 5 = 13
     int eHeight = vMargin*2;
@@ -336,8 +336,8 @@ class UI {
     // screen values
     int fullWidth, fullHeight, innerWidth, innerHeight, outerX, innerX, outerY, innerY, outline;
     outline = border;
-    fullWidth = width; //<>//
-    innerWidth = fullWidth - outline*2; //<>//
+    fullWidth = width;
+    innerWidth = fullWidth - outline*2;
     fullHeight = height;
     innerHeight = fullHeight - outline*2;
     outerX = 0;
@@ -348,7 +348,7 @@ class UI {
     fill(0);
     rect(outerX, outerY, fullWidth, fullHeight);
     fill(255);
-    rect(innerX, innerY, innerWidth, innerHeight); //<>//
+    rect(innerX, innerY, innerWidth, innerHeight);
   }
 
   void drawBlock(int outerX, int outerY, int fullWidth, int fullHeight, int innerX, int innerY, int innerWidth, int innerHeight, int isMap) {

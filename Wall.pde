@@ -1,4 +1,4 @@
-class Wall { //<>// //<>//
+class Wall {
 
   // A boundary is a simple rectangle with x,y,width,and height
   float w;

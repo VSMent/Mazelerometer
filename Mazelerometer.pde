@@ -1,4 +1,4 @@
-//import ketai.sensors.*; //<>// //<>//
+//import ketai.sensors.*; //<>//
 
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
@@ -135,18 +135,18 @@ void  infoScreen(int type) {
     ui.drawInfoScreen(type);
   }
   updateInfoScreen();
-} //<>// //<>//
+} //<>//
 
 void updateInfoScreen() {
   ui.infoExitButton.show(click);
   if (ui.infoExitButton.isClicked(click)) {
-    infoExitButtonEvent(); //<>// //<>//
-  } //<>// //<>//
+    infoExitButtonEvent(); //<>//
+  } //<>//
 }
 void infoExitButtonEvent() {
   if (isError) {
-    System.exit(0); //<>// //<>//
-  } else { //<>// //<>//
+    System.exit(0); //<>//
+  } else { //<>//
     isStart = true;
     isInfo = false;
   }
@@ -190,58 +190,53 @@ void pauseNextButtonEvent() {
   }
   isPause = false;
 }
-void pauseExitButtonEvent() { //<>// //<>//
-  System.exit(0); //<>// //<>//
+void pauseExitButtonEvent() { //<>//
+  System.exit(0); //<>//
 }
 
 void gameScreen() {
   if (currentScreen != "game") {
     currentScreen = "game";
     timeNow = millis();
-    ui.drawGameScreen();
-  }
+    JSONObject level = levels.getJSONObject(currentLevel-1);
+    JSONArray rawPattern = level.getJSONArray("pattern");  // jsonArray of jsonArrays
+
+    cellsCount = level.getInt("size");
+    availableMaps = level.getInt("availableMaps"); //<>//
+    cellSize = ui.mapInnerWidth / cellsCount; //<>//
+    mapShift = (ui.mapInnerWidth - (cellSize * cellsCount))/2;
+    timeBest = level.getInt("bestTime");
+
+    for (int i = 0; i < cellsCount; i++) {
+      levelPattern.add(rawPattern.getJSONArray(i).getIntArray());  // arrayList of int arrays //<>//
+      for (int j = 0; j<cellsCount; j++) { //<>//
+        levelPatternWalls.add(new Wall(j*cellSize, i*cellSize,cellSize,cellSize));
+      }
+    } //<>//
+    ui.drawGameScreen(); //<>//
+  } //<>//
   updateGameScreen();
-}
- //<>// //<>//
- //<>// //<>//
-/*
-{
-  JSONObject level = levels.getJSONObject(currentLevel-1);
-  JSONArray rawPattern = level.getJSONArray("pattern");  // jsonArray of jsonArrays
- //<>// //<>//
-  cellsCount = level.getInt("size"); //<>// //<>//
-  availableMaps = level.getInt("availableMaps");
-  cellSize = mapInnerWidth / cellsCount;
-  mapShift = (mapInnerWidth - (cellSize * cellsCount))/2; //<>// //<>//
-  timeBest = level.getInt("bestTime"); //<>// //<>//
- //<>// //<>//
-  for (int i = 0; i < cellsCount; i++) {
-    levelPattern.add(rawPattern.getJSONArray(i).getIntArray());  // arrayList of int arrays
-    for (int j = 0; j<cellsCount; j++) {
-      levelPatternWalls.add(new Wall(j*cellSize, i*cellSize,cellSize,cellSize));
-    }
-  }
 }
 
 void updateMap() {
-  pushMatrix(); //<>// //<>//
-  translate(ui.mapInnerX+mapShift+cellSize/2, ui.mapInnerY+mapShift+cellSize/2); //<>// //<>//
+  pushMatrix();
+  translate(ui.mapInnerX+mapShift+cellSize/2, ui.mapInnerY+mapShift+cellSize/2);
   Wall pl;
   for (int i = 0; i < cellsCount; i++) {
     for (int j = 0; j < cellsCount; j++) {
-      Wall w = levelPatternWalls.get(i*cellsCount+j);
-      if (levelPattern.get(i)[j] == 1) { //<>// //<>//
-        w.setColor(150).display(); //<>// //<>//
+      Wall w = levelPatternWalls.get(i*cellsCount+j); //<>//
+      if (levelPattern.get(i)[j] == 1) { //<>//
+        w.setColor(150).display();
       } else if (levelPattern.get(i)[j] == 2) {
         pl = w;
         w.setColor(color(255, 255, 0)).display();
-      } else if (levelPattern.get(i)[j] == 3) { //<>// //<>//
-        w.setColor(color(0, 255, 0)).display(); //<>// //<>//
+      } else if (levelPattern.get(i)[j] == 3) { //<>//
+        w.setColor(color(0, 255, 0)).display(); //<>//
       } else {
         w.setColor(255).display();
       }
-        
-      //stroke(0);
+         //<>//
+      //stroke(0); //<>//
     }
   }
   popMatrix();
@@ -265,7 +260,7 @@ void updateMap() {
   //  }
   //}
   //popMatrix();
-}*/
+}
 
 
 
@@ -285,7 +280,7 @@ void updateGameScreen() {
     .show(false);
 
   updateMain();
-  // updateMap();
+  updateMap();
   if (ui.pauseButton.isClicked(click)) {
     pauseButtonEvent();
   }
