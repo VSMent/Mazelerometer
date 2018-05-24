@@ -42,8 +42,8 @@ class Player {
     
     body.createFixture(cs,1);
     body.setUserData(this);
-    body.setAngularVelocity(random(-10, 10));
-    body.setLinearVelocity(new Vec2(5, 5));
+    // body.setAngularVelocity(random(-10, 10));
+    // body.setLinearVelocity(new Vec2(5, 5));
   }
   
 }
