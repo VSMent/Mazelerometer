@@ -1,4 +1,4 @@
-//import ketai.sensors.*; //<>// //<>// //<>// //<>//
+//import ketai.sensors.*; //<>// //<>// //<>// //<>// //<>//
 
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
@@ -71,10 +71,10 @@ border = Math.round(height * .00625);
   box2d.listenForCollisions();
   box2d.setGravity(0, 0);
   
-  UI.initControlls();
+  initControlls();
   
-  initLeftBlock(border);
-  initMainBlock(border);
+  initLeftBlock();
+  initMainBlock();
   initMapBlock(border);
   initRightBlock(border);
 
@@ -111,7 +111,7 @@ void startScreen() {
   updateStartScreen();
 }
 void initStartScreen() {
-  UI.drawSimpleBorder();
+  drawSimpleBorder();
   currentScreen = "start";
 
   // controll elements values
@@ -135,18 +135,18 @@ void initStartScreen() {
 
   helpButton.setWidth(eWidth)
     .setHeigth(eHeight)
-    .setX(hMargin) //<>//
+    .setX(hMargin) //<>// //<>//
     .setY(vMargin*3+eHeight*2)
     .show(click);
 
   exitButton.setWidth(eWidth)
-    .setHeigth(eHeight) //<>//
-    .setX(hMargin) //<>//
+    .setHeigth(eHeight) //<>// //<>//
+    .setX(hMargin) //<>// //<>//
     .setY(vMargin*4+eHeight*3)
     .show(click);
 }
- //<>// //<>//
-void  updateStartScreen() { //<>//
+ //<>// //<>// //<>//
+void  updateStartScreen() { //<>// //<>//
   playButton.show(click);
   helpButton.show(click);
   exitButton.show(click);
@@ -190,8 +190,8 @@ void  initInfoScreen(int type) {
   if (type == 1) {  // error
     headerLabel.setText("Error");
     infoBigLabel.setTextSize(80)
-      .setTextColor(#cf0808) //<>//
-      .setText("Error"); //<>//
+      .setTextColor(#cf0808) //<>// //<>//
+      .setText("Error"); //<>// //<>//
     infoExitButton.setText("Exit");
   } else {  // help
     headerLabel.setText("How to play?");
@@ -202,19 +202,19 @@ void  initInfoScreen(int type) {
       "You can show map again, but only several times (and for short time)\n"+
       "Your goal and ball are always highlighted on the map.\n"+ //<>//
       "The sooner you finish the better."); //<>//
-    infoExitButton.setText("Back"); //<>//
-  } //<>//
+    infoExitButton.setText("Back"); //<>// //<>//
+  } //<>// //<>//
 
   headerLabel.setWidth(eWidth*2)
     .setHeigth(eHeight)
     .setX(hMargin-(eWidth/2))
-    .setY(vMargin*1+eHeight*0) //<>//
-    .show(false); //<>//
+    .setY(vMargin*1+eHeight*0) //<>// //<>//
+    .show(false); //<>// //<>//
 
   infoBigLabel.setWidth(eWidth*2)
-    .setHeigth(eHeight*2+vMargin) //<>// //<>//
-    .setX(hMargin-(eWidth/2)) //<>// //<>//
-    .setY(vMargin*2+eHeight*1) //<>//
+    .setHeigth(eHeight*2+vMargin) //<>// //<>// //<>//
+    .setX(hMargin-(eWidth/2)) //<>// //<>// //<>//
+    .setY(vMargin*2+eHeight*1) //<>// //<>//
     .show(false);
 
   infoExitButton.setWidth(eWidth)
@@ -224,19 +224,19 @@ void  initInfoScreen(int type) {
     .show(click);
 } //<>// //<>//
 void updateInfoScreen() { //<>// //<>// //<>//
-  infoExitButton.show(click); //<>// //<>//
-  if (infoExitButton.isClicked(click)) { //<>//
+  infoExitButton.show(click); //<>// //<>// //<>//
+  if (infoExitButton.isClicked(click)) { //<>// //<>//
     infoExitButtonEvent();
   }
 }
 void infoExitButtonEvent() {
-  if (isError) { //<>//
-    System.exit(0); //<>//
+  if (isError) { //<>// //<>//
+    System.exit(0); //<>// //<>//
   } else {
     isStart = true;
     isInfo = false; //<>// //<>//
-  } //<>// //<>// //<>//
-} //<>//
+  } //<>// //<>// //<>// //<>//
+} //<>// //<>//
 
 void pauseScreen(int type) {
   if (currentScreen != "pause") {
@@ -344,6 +344,7 @@ void pauseExitButtonEvent() {
 void gameScreen() {
   if (currentScreen != "game") {
     initGameScreen();
+    initGameScreen2();
     currentScreen = "game";
   }
   updateGameScreen();
@@ -693,7 +694,7 @@ void initControlls() {
   mainInnerY = mainOuterY + mainOutline;  // outer + outline
 }
 
- void initGameScreen(){
+ void initGameScreen2(){
   drawBlock(leftOuterX, leftOuterY, leftFullWidth, leftFullHeight, leftInnerX, leftInnerY, leftInnerWidth, leftInnerHeight, 0);
   drawBlock(mainOuterX, mainOuterY, mainFullWidth, mainFullHeight, mainInnerX, mainInnerY, mainInnerWidth, mainInnerHeight, 0);
   drawBlock(mapOuterX, mapOuterY, mapFullWidth, mapFullHeight, mapInnerX, mapInnerY, mapInnerWidth, mapInnerHeight, 1);
