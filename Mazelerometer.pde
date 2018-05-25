@@ -27,7 +27,7 @@ int mapTimeEnd = 3, mapDuration = 3;  // when to stop showing map, for how long 
 float mapShift;  // if map / cellsCount is not integer
 float ballMaxSpeed, ballAcceleration;
 Vec2 velocity, position;
-ArrayList<String> levelPattern;
+ArrayList<int[]> levelPattern;
 ArrayList<MapEntity> levelPatternWalls;
 ArrayList<MapEntity> hitWalls;
 String currentScreen;
@@ -253,23 +253,22 @@ void loadLevel() { //<>//
   mapShift = (ui.mapInnerWidth - (cellSize * cellsCount))/2;
 
   for (int i = 0; i < cellsCount; i++) {
-    levelPattern.add(rawPattern.getString(i));  // arrayList of Strings
-    println(levelPattern.get(levelPattern.size()-1));
+    levelPattern.add(rawPattern.getJSONArray(i).getIntArray());  // arrayList of int arrays
     for (int j = 0; j<cellsCount; j++) {
-      if (levelPattern.get(i).charAt(j*2) == 1) {
-        if (!checkWall(j*2*cellSize, i*cellSize)) {
-          levelPatternWalls.add(new MapEntity(j*2*cellSize, i*cellSize, cellSize, cellSize, 1).changeBack());
+      if (levelPattern.get(i)[j] == 1) {
+        if (!checkWall(j*cellSize, i*cellSize)) {
+          levelPatternWalls.add(new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 1).changeBack());
         } else {
-          levelPatternWalls.add(new MapEntity(j*2*cellSize, i*cellSize, cellSize, cellSize, 1).change());
+          levelPatternWalls.add(new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 1).change());
         }
-      } else if (levelPattern.get(i).charAt(j*2) == 2) { 
-        // if (position == null) {
+      } else if (levelPattern.get(i)[j] == 2) { 
+        if (position == null) {
           pl = new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 2).setColor(color(255, 255, 0));
-        // } else {
-          // pl = new MapEntity(position.x, position.y, cellSize, cellSize, 2).setColor(color(255, 255, 0));
-        // }
-      } else if (levelPattern.get(i).charAt(j*2) == 3) { 
-        ex = new MapEntity(j*2*cellSize, i*cellSize, cellSize, cellSize, 3).setColor(color(0, 255, 0));
+        } else {
+          pl = new MapEntity(position.x, position.y, cellSize, cellSize, 2).setColor(color(255, 255, 0));
+        }
+      } else if (levelPattern.get(i)[j] == 3) { 
+        ex = new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 3).setColor(color(0, 255, 0));
       }
     }
   }
@@ -437,7 +436,7 @@ void updateJson() {
   // levels
   levels.setJSONObject(currentLevel-1, levels.getJSONObject(currentLevel-1).setInt("bestTime",timeBest));
   maze.setJSONArray("levels", levels);
-  saveJSONObject(maze, "data/maze.json");
+  saveJSONObject(maze, "data/maze.json", "compact");
 
   // println("\"updateJson\"");
   // println("  |--currentLevel: "+currentLevel);
