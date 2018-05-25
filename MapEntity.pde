@@ -20,8 +20,13 @@ class MapEntity {
     box2d.destroyBody(body);
   }
 
-  void change() {
+  MapEntity change() {
     col = color(255, 0, 0);
+    return this;
+  }
+  MapEntity changeBack() {
+    col = color(150);
+    return this;
   }
 
 
@@ -36,8 +41,8 @@ class MapEntity {
     fill(col);
     strokeWeight(1);
     if (type == 2) {
-      noStroke();
-      ellipse(0, 0, w, h);
+      stroke(0);
+      ellipse(0, 0, w, h);     
     } else {
       stroke(0);
       rectMode(CENTER);

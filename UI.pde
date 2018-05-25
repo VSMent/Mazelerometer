@@ -1,11 +1,11 @@
 class UI {
-  int border = 1;
+  int border = 1; //<>// //<>// //<>//
 
   int leftFullWidth, leftFullHeight, leftInnerWidth, leftInnerHeight, leftOuterX, leftInnerX, leftOuterY, leftInnerY, leftOutline;
   int mainFullWidth, mainFullHeight, mainInnerWidth, mainInnerHeight, mainOuterX, mainInnerX, mainOuterY, mainInnerY, mainOutline;
   int mapFullWidth, mapFullHeight, mapInnerWidth, mapInnerHeight, mapOuterX, mapInnerX, mapOuterY, mapInnerY, mapOutline;
   int rightFullWidth, rightFullHeight, rightInnerWidth, rightInnerHeight, rightOuterX, rightInnerX, rightOuterY, rightInnerY, rightOutline;
-  
+
   Controll playButton, helpButton, exitButton, pauseButton, showMapButton, soundButton, infoExitButton, pauseSoundButton, pauseNextButton, pauseExitButton;
   Controll headerLabel, mapCountLabel, timeLabel, bestLabel, pauseMapsLabel, pauseTimeLabel, pauseBestLabel;
   Controll infoBigLabel;
@@ -156,10 +156,10 @@ class UI {
   }
 
   void drawGameScreen() {
-    drawBlock(leftOuterX, leftOuterY, leftFullWidth, leftFullHeight, leftInnerX, leftInnerY, leftInnerWidth, leftInnerHeight, 0);
-    drawBlock(mainOuterX, mainOuterY, mainFullWidth, mainFullHeight, mainInnerX, mainInnerY, mainInnerWidth, mainInnerHeight, 0);
-    drawBlock(mapOuterX, mapOuterY, mapFullWidth, mapFullHeight, mapInnerX, mapInnerY, mapInnerWidth, mapInnerHeight, 1);
-    drawBlock(rightOuterX, rightOuterY, rightFullWidth, rightFullHeight, rightInnerX, rightInnerY, rightInnerWidth, rightInnerHeight, 0);
+    drawBlock(0); // left
+    drawBlock(1); // main
+    drawBlock(2); // map
+    drawBlock(3); // right
 
     // controll elements
     int lVMargin = Math.round(leftInnerHeight/13);  // (left vertical margin) left 4 elements with 5 margins (element weight = 2, margin -- 1) 4*2 + 5*1 = 8 + 5 = 13
@@ -210,7 +210,6 @@ class UI {
       .setX(rightInnerX+rHMargin)
       .setY(rightInnerY+rVMargin*2+rEHeight*1)
       .show(click);
-      println("game screen");
   }
 
   void initLeftBlock() {
@@ -352,14 +351,28 @@ class UI {
     rect(innerX, innerY, innerWidth, innerHeight);
   }
 
-  void drawBlock(int outerX, int outerY, int fullWidth, int fullHeight, int innerX, int innerY, int innerWidth, int innerHeight, int isMap) {
-    fill(0);
-    rect(outerX, outerY, fullWidth, fullHeight);
-    if (isMap==1)
-      fill(150);
-    else
+  void drawBlock(int block) {
+    if (block == 0) {
+      fill(0);
+      rect(leftOuterX, leftOuterY, leftFullWidth, leftFullHeight);
       fill(255);
-    rect(innerX, innerY, innerWidth, innerHeight);
+      rect(leftInnerX, leftInnerY, leftInnerWidth, leftInnerHeight);
+    } else if (block == 1) {
+      fill(0);
+      rect(mainOuterX, mainOuterY, mainFullWidth, mainFullHeight);
+      fill(255);
+      rect(mainInnerX, mainInnerY, mainInnerWidth, mainInnerHeight);
+    } else if (block == 2) {
+      fill(0);
+      rect(mapOuterX, mapOuterY, mapFullWidth, mapFullHeight);
+      fill(150);
+      rect(mapInnerX, mapInnerY, mapInnerWidth, mapInnerHeight);
+    } else if (block == 3) {
+      fill(0);
+      rect(rightOuterX, rightOuterY, rightFullWidth, rightFullHeight);
+      fill(255);
+      rect(rightInnerX, rightInnerY, rightInnerWidth, rightInnerHeight);
+    }
   }
 
   UI() {
