@@ -1,4 +1,4 @@
-//import ketai.sensors.*;  //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+//import ketai.sensors.*;  //<>// //<>// //<>//
 
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
@@ -22,6 +22,7 @@ JSONArray levels;
 int currentLevel = 1, availableMaps = 0, timeSpent = 0, timeBest = 0, timeNow;
 int cellsCount;  // level size, available maps
 int cellSize;  // size of one wall / empty / player / exit cell
+int hitHistory = 5;
 float mapShift;  // if map / cellsCount is not integer
 float ballMaxSpeed, ballAcceleration;
 Vec2 velocity, position;
@@ -134,24 +135,24 @@ void helpButtonEvent() {
   isInfo = true;
 }
 void exitButtonEvent() {
-  System.exit(0);
+  System.exit(0); //<>// //<>//
   //exit(); //<>//
-} //<>// //<>//
+}
 
 void  infoScreen(int type) {
-  if (currentScreen != "info") {
-    currentScreen = "info"; //<>// //<>// //<>// //<>// //<>// //<>//
-    ui.drawInfoScreen(type); //<>// //<>// //<>//
-  } //<>// //<>//
+  if (currentScreen != "info") { //<>// //<>//
+    currentScreen = "info"; //<>// //<>// //<>//
+    ui.drawInfoScreen(type); //<>//
+  }
   updateInfoScreen();
-}
-//<>// //<>// //<>// //<>// //<>// //<>// //<>//
-void updateInfoScreen() { //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
-  ui.infoExitButton.show(click); //<>// //<>//
+} //<>// //<>//
+ //<>// //<>// //<>//
+void updateInfoScreen() { //<>//
+  ui.infoExitButton.show(click);
   if (ui.infoExitButton.isClicked(click)) {
     infoExitButtonEvent();
-  } //<>// //<>// //<>// //<>// //<>//
-} //<>// //<>// //<>// //<>// //<>//
+  }
+}
 void infoExitButtonEvent() {
   if (isError) {
     System.exit(0);
@@ -189,75 +190,77 @@ void updatePauseScreen(int type) {
   if (ui.pauseNextButton.isClicked(click)) {  // need to check back or exit
     pauseNextButtonEvent();
   }
-  if (ui.pauseExitButton.isClicked(click)) {  // need to check back or exit
-    pauseExitButtonEvent(); //<>//
-  } //<>// //<>// //<>//
-} //<>// //<>//
+  if (ui.pauseExitButton.isClicked(click)) {  // need to check back or exit //<>// //<>//
+    pauseExitButtonEvent(); //<>// //<>// //<>//
+  } //<>//
+}
 
 void pauseSoundButtonEvent() {
   sound = !sound;
 }
-void pauseNextButtonEvent() { //<>// //<>// //<>// //<>// //<>//
-  if (isWin) { //<>// //<>// //<>// //<>// //<>//
+void pauseNextButtonEvent() {
+  if (isWin) {
     if (currentLevel>=levels.size()) {
       currentLevel=1;
-    } else {
-      currentLevel++; //<>//
-    } //<>// //<>// //<>//
-    timeSpent = 0; //<>// //<>//
+    } else { //<>// //<>//
+      currentLevel++; //<>// //<>// //<>//
+    } //<>//
+    timeSpent = 0;
     timeBest = 0;
     hitWalls = new ArrayList();
-    isWin = false;
-  } //<>//
-  isPause = false; //<>// //<>// //<>// //<>// //<>// //<>//
-} //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+    isWin = false; //<>// //<>//
+  } //<>// //<>// //<>//
+  isPause = false; //<>//
+}
 void pauseExitButtonEvent() { //<>// //<>//
-  System.exit(0); //<>//
-} //<>//
-//<>// //<>// //<>//
-void gameScreen() { //<>// //<>// //<>// //<>// //<>// //<>// //<>//
-  if (currentScreen != "game") { //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+  System.exit(0); //<>// //<>// //<>//
+} //<>// //<>// //<>//
+ //<>//
+void gameScreen() {
+  if (currentScreen != "game") {
     currentScreen = "game";
 
-    timeNow = millis(); //<>// //<>// //<>// //<>// //<>//
-    //<>// //<>// //<>// //<>// //<>//
-    loadLevel(); //<>// //<>// //<>// //<>// //<>//
+    timeNow = millis();
 
-    ui.drawGameScreen();
-  } //<>//
+    loadLevel();
+
+    ui.drawGameScreen(); //<>// //<>//
+  } //<>// //<>// //<>//
   updateGameScreen(); //<>//
-} //<>// //<>//
-//<>// //<>//
+}
+
 void loadLevel() {
-  println(hitWalls.size());
-  if (pl != null) {     //<>//
-    pl.killBody(); //<>//
+  if (pl != null) {     //<>// //<>// //<>//
+    pl.killBody(); //<>// //<>// //<>//
     ex.killBody();
-    for (MapEntity e : levelPatternWalls) { //<>// //<>//
-      e.killBody(); //<>// //<>//
-    } //<>//
-  } //<>//
-  levelPattern = new ArrayList(); //<>//
-  levelPatternWalls = new ArrayList(); //<>// //<>// //<>//
-  pl = null; //<>// //<>// //<>// //<>// //<>//
-  ex = null; //<>// //<>// //<>/
-  //<>//
-  //<>//
+    for (MapEntity e : levelPatternWalls) {
+      e.killBody();
+    } //<>// //<>// //<>//
+  } //<>// //<>// //<>//
+  levelPattern = new ArrayList();
+  levelPatternWalls = new ArrayList();
+  pl = null;
+  ex = null;  
+
   JSONObject level = levels.getJSONObject(currentLevel-1);
   JSONArray rawPattern = level.getJSONArray("pattern");  // jsonArray of jsonArrays
-  //<>//
-  cellsCount = level.getInt("size"); //<>//
-  availableMaps = level.getInt("availableMaps"); //<>// //<>// //<>//
-  cellSize = ui.mapInnerWidth / cellsCount; //<>// //<>// //<>//
+
+  cellsCount = level.getInt("size");
+  availableMaps = level.getInt("availableMaps");
+  cellSize = ui.mapInnerWidth / cellsCount;
   mapShift = (ui.mapInnerWidth - (cellSize * cellsCount))/2;
   timeBest = level.getInt("bestTime");
-  //<>//
-  for (int i = 0; i < cellsCount; i++) { //<>// //<>// //<>// //<>//
-    levelPattern.add(rawPattern.getJSONArray(i).getIntArray());  // arrayList of int arrays //<>// //<>// //<>//
+
+  for (int i = 0; i < cellsCount; i++) {
+    levelPattern.add(rawPattern.getJSONArray(i).getIntArray());  // arrayList of int arrays
     for (int j = 0; j<cellsCount; j++) {
       if (levelPattern.get(i)[j] == 1) {
-        levelPatternWalls.add(new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 1).changeBack());
-      } else if (levelPattern.get(i)[j] == 2) {  //<>//
+        if (!checkWall(j*cellSize, i*cellSize)) {
+          levelPatternWalls.add(new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 1).changeBack());
+        } else {
+          levelPatternWalls.add(new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 1).change());
+        }
+      } else if (levelPattern.get(i)[j] == 2) { 
         if (position == null) {
           pl = new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 2).setColor(color(255, 255, 0));
         } else {
@@ -267,13 +270,17 @@ void loadLevel() {
         ex = new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 3).setColor(color(0, 255, 0));
       }
     }
-
   }
-    for (MapEntity e : hitWalls) {
-      e.change();
-    }
 }
 
+boolean checkWall(float x, float y) {
+  for (MapEntity e : hitWalls) {
+    if (e.pos.x == x && e.pos.y == y) {
+      return true;
+    }
+  }
+  return false;
+}
 void updateGameScreen() {
   if (millis()-timeNow>=1000) {
     timeNow = millis();
@@ -322,28 +329,7 @@ void updateMap() {
   }
   pl.display();
   ex.display();
-  //stroke(0);
   popMatrix();
-
-
-  //pushMatrix();
-  //translate(mapInnerX+mapShift, mapInnerY+mapShift);
-  //for (int i = 0; i < cellsCount; i++) {
-  //  for (int j = 0; j < cellsCount; j++) {
-  //    if (levelPattern.get(i)[j] == 1) {
-  //      fill(150);
-  //    } else if (levelPattern.get(i)[j] == 2) {
-  //      fill(255, 255, 0);
-  //    } else if (levelPattern.get(i)[j] == 3) {
-  //      fill(0, 255, 0);
-  //    } else {
-  //      fill(255);
-  //    }
-  //    stroke(0);
-  //    rect(j*cellSize, i*cellSize, cellSize, cellSize);
-  //  }
-  //}
-  //popMatrix();
 }
 
 void pauseButtonEvent() {
@@ -413,17 +399,26 @@ void beginContact(Contact cp) {
   if (o1 == pl.body.getUserData()) {
     MapEntity w = (MapEntity) o2;
     w.change();
-    hitWalls.add(w);
+    hit(w);
     velocity = new Vec2(0, 0);
   }  
   if (o2 == pl.body.getUserData()) {
     MapEntity w = (MapEntity) o1;
     w.change();
-    hitWalls.add(w);
+    hit(w);
     velocity = new Vec2(0, 0);
   }
 }
 
+void hit(MapEntity wall){
+  if(!checkWall(wall.pos.x,wall.pos.y)){ // no hit
+    if(hitWalls.size() >= hitHistory){
+      hitWalls.get(0).changeBack();
+      hitWalls.remove(0);
+    }
+    hitWalls.add(wall);
+  }
+}
 void endContact(Contact cp) {
 }
 
