@@ -60,8 +60,8 @@ class MapEntity {
 
     if (type == 2) {
       bd.type = BodyType.DYNAMIC;
-      w -=4;
-      h -=4;
+      w -=5;
+      h -=5;
     } else {
       bd.type = BodyType.STATIC;
     }

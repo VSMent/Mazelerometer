@@ -1,4 +1,4 @@
-//import ketai.sensors.*;  //<>// //<>// //<>// //<>// //<>//
+import ketai.sensors.*;  //<>//
 
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
@@ -8,6 +8,11 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
+
+
+KetaiSensor sensor;
+
+Vec2 velocity, position;
 
 UI ui;
 Box2DProcessing box2d;
@@ -26,7 +31,7 @@ int hitHistory = 5;  // how much hit walls will be displayed
 int mapTimeEnd = 3, mapDuration = 3;  // when to stop showing map, for how long show map 
 float mapShift;  // if map / cellsCount is not integer
 float ballMaxSpeed, ballAcceleration;
-Vec2 velocity, position;
+float accelerometerX, accelerometerY, accelerometerZ;
 ArrayList<int[]> levelPattern;
 ArrayList<MapEntity> levelPatternWalls;
 ArrayList<MapEntity> hitWalls;
@@ -44,6 +49,8 @@ void setup() {
 }
 
 void init() {
+  //sensor = new KetaiSensor(this);
+  //sensor.start();
   noStroke();
   ui = new UI();
   ui.border = Math.round(height * .00625);
@@ -128,27 +135,27 @@ void updateStartScreen() {
     exitButtonEvent();
   }
 }
-void playButtonEvent() {
-  isStart = false;
-}
+void playButtonEvent() { //<>//
+  isStart = false; //<>//
+} //<>//
 void helpButtonEvent() {
   isStart = false;
-  isInfo = true;
-}
+  isInfo = true; //<>//
+} //<>//
 void exitButtonEvent() { //<>//
-  System.exit(0); //<>// //<>// //<>//
-  //exit(); //<>//
+  System.exit(0); //<>//
+  //exit();
+} //<>//
+ //<>//
+void  infoScreen(int type) { //<>//
+  if (currentScreen != "info") { //<>//
+    currentScreen = "info";
+    ui.drawInfoScreen(type);
+  }
+  updateInfoScreen();
 }
 
-void  infoScreen(int type) { //<>//
-  if (currentScreen != "info") { //<>// //<>// //<>// //<>//
-    currentScreen = "info"; //<>// //<>// //<>// //<>//
-    ui.drawInfoScreen(type); //<>//
-  }
-  updateInfoScreen(); //<>//
-} //<>// //<>// //<>// //<>//
- //<>// //<>// //<>// //<>//
-void updateInfoScreen() { //<>//
+void updateInfoScreen() {
   ui.infoExitButton.show(click);
   if (ui.infoExitButton.isClicked(click)) {
     infoExitButtonEvent();
@@ -183,61 +190,61 @@ void updatePauseScreen(int type) {
   ui.pauseSoundButton.show(click);
   ui.pauseNextButton.show(click);
   ui.pauseExitButton.show(click);
-
-
-  if (ui.pauseSoundButton.isClicked(click)) {  // need to check back or exit
-    pauseSoundButtonEvent();
+ //<>//
+ //<>//
+  if (ui.pauseSoundButton.isClicked(click)) {  // need to check back or exit //<>//
+    pauseSoundButtonEvent(); //<>//
   }
   if (ui.pauseNextButton.isClicked(click)) {  // need to check back or exit
     pauseNextButtonEvent();
-  } //<>//
-  if (ui.pauseExitButton.isClicked(click)) {  // need to check back or exit //<>// //<>// //<>// //<>//
-    pauseExitButtonEvent(); //<>// //<>// //<>// //<>//
-  } //<>//
+  }
+  if (ui.pauseExitButton.isClicked(click)) {  // need to check back or exit
+    pauseExitButtonEvent();
+  }
 }
-
-void pauseSoundButtonEvent() {
-  sound = !sound;
-}
+ //<>//
+void pauseSoundButtonEvent() { //<>//
+  sound = !sound; //<>//
+} //<>//
 void pauseNextButtonEvent() {
   if (isWin) {
-    if (currentLevel>=levels.size()) {
+    if (currentLevel>=levels.size()) { //<>//
       currentLevel=1; //<>//
-    } else { //<>// //<>// //<>// //<>//
-      currentLevel++; //<>// //<>// //<>// //<>//
+    } else { //<>//
+      currentLevel++; //<>//
     } //<>//
-    timeSpent = 0;
-    timeBest = 0;
+    timeSpent = 0; //<>//
+    timeBest = 0; //<>//
     hitWalls = new ArrayList(); //<>//
-    isWin = false; //<>// //<>// //<>// //<>//
-  } //<>// //<>// //<>// //<>//
-  isPause = false; //<>//
-} //<>//
-void pauseExitButtonEvent() { //<>// //<>// //<>// //<>//
-  System.exit(0); //<>// //<>// //<>// //<>// //<>//
-} //<>// //<>// //<>// //<>//
- //<>//
-void gameScreen() {
-  if (currentScreen != "game") {
-    currentScreen = "game";
-
-    timeNow = millis();
-
-    loadLevel();
- //<>//
-    ui.drawGameScreen(); //<>// //<>// //<>// //<>//
-  } //<>// //<>// //<>// //<>//
-  updateGameScreen(); //<>//
+    isWin = false; //<>//
+  }
+  isPause = false;
+}
+void pauseExitButtonEvent() {
+  System.exit(0);
 }
 
+void gameScreen() { //<>//
+  if (currentScreen != "game") { //<>//
+    currentScreen = "game"; //<>//
+ //<>//
+    timeNow = millis();
+
+    loadLevel(); //<>//
+ //<>//
+    ui.drawGameScreen(); //<>//
+  }
+  updateGameScreen();
+} //<>//
+ //<>//
 void loadLevel() { //<>//
-  if (pl != null) {     //<>// //<>// //<>// //<>// //<>//
-    pl.killBody(); //<>// //<>// //<>// //<>//
+  if (pl != null) {    
+    pl.killBody();
     ex.killBody();
     for (MapEntity e : levelPatternWalls) {
-      e.killBody(); //<>//
-    } //<>// //<>// //<>// //<>// //<>//
-  } //<>// //<>// //<>// //<>//
+      e.killBody();
+    }
+  }
   levelPattern = new ArrayList();
   levelPatternWalls = new ArrayList();
   pl = null;
@@ -352,9 +359,6 @@ void soundButtonEvent() {
   sound = !sound;
 }
 
-
-
-
 void moveBall() {  
   if (keyPressed) {
     if (keyCode == UP) {
@@ -371,18 +375,27 @@ void moveBall() {
     }
     pl.body.setLinearVelocity(velocity);
   }
+  
+//  textSize(32);
+//text(accelerometerX, width/2, 50); 
+//text(accelerometerY, width/2, 200);
+//text(accelerometerZ, width/2, 300); 
+
+  if(Math.abs(accelerometerX)>1){
+    float accY = accelerometerX*2;  
+    velocity = new Vec2(
+        0,constrain(velocity.y-accY, -ballMaxSpeed, ballMaxSpeed)
+      );
+    pl.body.setLinearVelocity(velocity);
+  }
+  if(Math.abs(accelerometerY)>1){
+    float accX = accelerometerY*2;  
+    velocity = new Vec2(
+        constrain(velocity.x+accX, -ballMaxSpeed, ballMaxSpeed),0
+      );
+    pl.body.setLinearVelocity(velocity);
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 void beginContact(Contact cp) {
   // Get both shapes
@@ -432,13 +445,14 @@ void mousePressed() {
 }
 
 void updateJson() {
-  // maze
-  // levels
   levels.setJSONObject(currentLevel-1, levels.getJSONObject(currentLevel-1).setInt("bestTime",timeBest));
   maze.setJSONArray("levels", levels);
-  saveJSONObject(maze, "data/maze.json", "compact");
+  saveJSONObject(maze, "maze.json", "compact");
+}
 
-  // println("\"updateJson\"");
-  // println("  |--currentLevel: "+currentLevel);
-  // println("  |--timeBest: "+timeBest);
+void onAccelerometerEvent(float x, float y, float z)
+{
+  accelerometerX = x;
+  accelerometerY = y;
+  accelerometerZ = z;
 }
