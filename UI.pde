@@ -1,5 +1,5 @@
 class UI {
-  int border = 1; //<>// //<>// //<>//
+  int border = 1; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
   int leftFullWidth, leftFullHeight, leftInnerWidth, leftInnerHeight, leftOuterX, leftInnerX, leftOuterY, leftInnerY, leftOutline;
   int mainFullWidth, mainFullHeight, mainInnerWidth, mainInnerHeight, mainOuterX, mainInnerX, mainOuterY, mainInnerY, mainOutline;
@@ -156,10 +156,10 @@ class UI {
   }
 
   void drawGameScreen() {
-    drawBlock(0); // left
-    drawBlock(1); // main
-    drawBlock(2); // map
-    drawBlock(3); // right
+    drawBlock(0,false); // left
+    drawBlock(1,false); // main
+    drawBlock(2,false); // map
+    drawBlock(3,false); // right
 
     // controll elements
     int lVMargin = Math.round(leftInnerHeight/13);  // (left vertical margin) left 4 elements with 5 margins (element weight = 2, margin -- 1) 4*2 + 5*1 = 8 + 5 = 13
@@ -351,7 +351,7 @@ class UI {
     rect(innerX, innerY, innerWidth, innerHeight);
   }
 
-  void drawBlock(int block) {
+  void drawBlock(int block, boolean useMap) {
     if (block == 0) {
       fill(0);
       rect(leftOuterX, leftOuterY, leftFullWidth, leftFullHeight);
@@ -365,7 +365,11 @@ class UI {
     } else if (block == 2) {
       fill(0);
       rect(mapOuterX, mapOuterY, mapFullWidth, mapFullHeight);
-      fill(150);
+      if (useMap) {
+        fill(170);
+      } else {
+        fill(150);
+      }
       rect(mapInnerX, mapInnerY, mapInnerWidth, mapInnerHeight);
     } else if (block == 3) {
       fill(0);

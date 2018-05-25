@@ -44,7 +44,8 @@ class MapEntity {
       stroke(0);
       ellipse(0, 0, w, h);     
     } else {
-      stroke(0);
+      //stroke(0);
+      noStroke();
       rectMode(CENTER);
       rect(0, 0, w, h);
     }
