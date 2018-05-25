@@ -8,4 +8,4 @@ application.macosx
 Без імені.png
 work_plan.*
 Thumbs.db
-.autosave
+*.autosave

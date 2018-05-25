@@ -210,6 +210,7 @@ class UI {
       .setX(rightInnerX+rHMargin)
       .setY(rightInnerY+rVMargin*2+rEHeight*1)
       .show(click);
+      println("game screen");
   }
 
   void initLeftBlock() {

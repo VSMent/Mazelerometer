@@ -1,4 +1,4 @@
-//import ketai.sensors.*;  //<>// //<>// //<>//
+//import ketai.sensors.*;  //<>// //<>// //<>// //<>// //<>// //<>//
 
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
@@ -11,6 +11,9 @@ import org.jbox2d.dynamics.contacts.*;
 
 UI ui;
 Box2DProcessing box2d;
+
+MapEntity ex;
+MapEntity pl;
 Player player;
 
 JSONObject maze;
@@ -20,9 +23,10 @@ int currentLevel = 1, availableMaps = 0, timeSpent = 0, timeBest = 0, timeNow;
 int cellsCount;  // level size, available maps
 int cellSize;  // size of one wall / empty / player / exit cell
 float mapShift;  // if map / cellsCount is not integer
-float ballSpeed; 
-ArrayList<int[]> levelPattern = new ArrayList();
-ArrayList<MapEntity> levelPatternEntities = new ArrayList();
+float ballMaxSpeed, ballAcceleration;
+Vec2 velocity;
+ArrayList<int[]> levelPattern;
+ArrayList<MapEntity> levelPatternWalls;
 String currentScreen;
 boolean isStart = true, isInfo = false, isPause = false, isWin = false, isError = false;
 boolean sound = true, click = false;
@@ -40,7 +44,10 @@ void init() {
   noStroke();
   ui = new UI();
   ui.border = Math.round(height * .00625);
-  ballSpeed = 1/4;  // 1 = 1 wall block;
+  ballMaxSpeed = 2.5;
+  ballAcceleration = 0.3;
+  velocity = new Vec2(0,0);
+  println(ballMaxSpeed);
   try {
     maze = loadJSONObject("maze.json");
     if (maze != null) {  // loaded successfully
@@ -65,9 +72,9 @@ void init() {
   box2d.setGravity(0, 0);
 
   player = new Player(width/2, height/2, 100);
-  
+
   ui.initControlls();
-  
+
   ui.initLeftBlock();
   ui.initMainBlock();
   ui.initMapBlock();
@@ -109,7 +116,7 @@ void updateStartScreen() {
   ui.helpButton.show(click);
   ui.exitButton.show(click);
   if (ui.playButton.isClicked(click)) {
-    playButtonEvent(); 
+    playButtonEvent();
   }
   if (ui.helpButton.isClicked(click)) {
     helpButtonEvent();
@@ -128,26 +135,26 @@ void helpButtonEvent() {
 void exitButtonEvent() {
   System.exit(0);
   //exit();
-}
+} //<>//
 
 void  infoScreen(int type) {
   if (currentScreen != "info") {
-    currentScreen = "info";
-    ui.drawInfoScreen(type);
+    currentScreen = "info"; //<>// //<>// //<>// //<>// //<>//
+    ui.drawInfoScreen(type); //<>//
   } //<>//
-  updateInfoScreen(); //<>// //<>//
-} //<>//
-
-void updateInfoScreen() {
-  ui.infoExitButton.show(click); //<>//
-  if (ui.infoExitButton.isClicked(click)) { //<>// //<>// //<>//
-    infoExitButtonEvent(); //<>// //<>// //<>//
-  } //<>//
+  updateInfoScreen();
 }
-void infoExitButtonEvent() { //<>//
-  if (isError) { //<>// //<>// //<>//
-    System.exit(0); //<>// //<>// //<>//
-  } else { //<>//
+//<>// //<>// //<>// //<>// //<>// //<>//
+void updateInfoScreen() { //<>// //<>// //<>// //<>// //<>// //<>//
+  ui.infoExitButton.show(click); //<>//
+  if (ui.infoExitButton.isClicked(click)) {
+    infoExitButtonEvent();
+  } //<>// //<>// //<>// //<>// //<>//
+} //<>// //<>// //<>// //<>// //<>//
+void infoExitButtonEvent() {
+  if (isError) {
+    System.exit(0);
+  } else {
     isStart = true;
     isInfo = false;
   }
@@ -155,6 +162,12 @@ void infoExitButtonEvent() { //<>//
 
 void pauseScreen(int type) {
   if (currentScreen != "pause") {
+    if (type == 1) {
+      if (timeSpent<timeBest || timeBest == 0) {
+        timeBest = timeSpent;
+        updateJson();
+      }
+    }
     ui.drawPauseScreen(type);
     currentScreen = "pause";
   }
@@ -177,66 +190,94 @@ void updatePauseScreen(int type) {
     pauseExitButtonEvent();
   }
 }
-
-void pauseSoundButtonEvent() {
+ //<>//
+void pauseSoundButtonEvent() { //<>//
   sound = !sound;
 }
-void pauseNextButtonEvent() {
-  if (isWin) {
+void pauseNextButtonEvent() { //<>// //<>// //<>// //<>// //<>//
+  if (isWin) { //<>// //<>// //<>// //<>// //<>//
     if (currentLevel>=levels.size()) {
       currentLevel=1;
     } else {
       currentLevel++;
     }
+    timeSpent = 0;
+    timeBest = 0; //<>//
+    isWin = false; //<>//
   }
-  isPause = false; //<>//
-} //<>// //<>// //<>//
-void pauseExitButtonEvent() { //<>// //<>// //<>//
+  isPause = false; //<>// //<>// //<>// //<>// //<>//
+} //<>// //<>// //<>// //<>// //<>//
+void pauseExitButtonEvent() {
   System.exit(0); //<>//
-}
+} //<>//
 
-void gameScreen() {
-  if (currentScreen != "game") {
-    currentScreen = "game";
+void gameScreen() { //<>// //<>// //<>// //<>// //<>//
+  if (currentScreen != "game") { //<>// //<>// //<>// //<>// //<>// //<>//
+    currentScreen = "game"; //<>//
+ //<>//
+    timeNow = millis(); //<>// //<>// //<>// //<>// //<>//
+    //<>// //<>// //<>// //<>// //<>//
+    loadLevel(); //<>// //<>// //<>// //<>// //<>//
 
-    timeNow = millis();
-    JSONObject level = levels.getJSONObject(currentLevel-1);
-    JSONArray rawPattern = level.getJSONArray("pattern");  // jsonArray of jsonArrays
- //<>// //<>// //<>//
-    cellsCount = level.getInt("size"); //<>// //<>// //<>//
-    availableMaps = level.getInt("availableMaps"); //<>//
-    cellSize = ui.mapInnerWidth / cellsCount; //<>//
-    mapShift = (ui.mapInnerWidth - (cellSize * cellsCount))/2;
-    timeBest = level.getInt("bestTime");
- //<>// //<>// //<>//
-    for (int i = 0; i < cellsCount; i++) { //<>// //<>// //<>//
-      levelPattern.add(rawPattern.getJSONArray(i).getIntArray());  // arrayList of int arrays //<>//
-      for (int j = 0; j<cellsCount; j++) { //<>//
-          levelPatternEntities.add(new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize)); //<>// //<>// //<>//
-      } //<>// //<>// //<>//
-    } //<>// //<>// //<>// //<>//
-
-
-    ui.drawGameScreen(); //<>//
-  } //<>//
+    ui.drawGameScreen();
+  }
   updateGameScreen();
 }
-void updateGameScreen() { //<>//
+
+void loadLevel() { //<>//
+  if (pl != null) {     //<>//
+    pl.killBody();
+    ex.killBody();
+    for (MapEntity e : levelPatternWalls) {
+      e.killBody();
+    } //<>//
+  } //<>//
+  levelPattern = new ArrayList(); //<>//
+  levelPatternWalls = new ArrayList(); //<>//
+  pl = null; //<>// //<>// //<>//
+  ex = null; //<>// //<>// //<>/ //<>//
+  //<>// //<>//
+  //<>//
+  JSONObject level = levels.getJSONObject(currentLevel-1);
+  JSONArray rawPattern = level.getJSONArray("pattern");  // jsonArray of jsonArrays
+  //<>//
+  cellsCount = level.getInt("size"); //<>//
+  availableMaps = level.getInt("availableMaps"); //<>// //<>// //<>//
+  cellSize = ui.mapInnerWidth / cellsCount; //<>// //<>// //<>//
+  mapShift = (ui.mapInnerWidth - (cellSize * cellsCount))/2;
+  timeBest = level.getInt("bestTime");
+  //<>//
+  for (int i = 0; i < cellsCount; i++) { //<>// //<>// //<>// //<>//
+    levelPattern.add(rawPattern.getJSONArray(i).getIntArray());  // arrayList of int arrays //<>// //<>// //<>//
+    for (int j = 0; j<cellsCount; j++) {
+      if (levelPattern.get(i)[j] == 1) {
+        levelPatternWalls.add(new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 1).setColor(150)); //<>//
+      } else if (levelPattern.get(i)[j] == 2) {  //<>//
+        pl = new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 2).setColor(color(255, 255, 0));
+      } else if (levelPattern.get(i)[j] == 3) { 
+        ex = new MapEntity(j*cellSize, i*cellSize, cellSize, cellSize, 3).setColor(color(0, 255, 0));
+      }
+    }
+  }
+}
+
+void updateGameScreen() {
   if (millis()-timeNow>=1000) {
     timeNow = millis();
-    timeSpent++; //<>//
-  } //<>//
- //<>//
-  ui.pauseButton.show(click); //<>//
+    timeSpent++;
+  }
+
+  ui.pauseButton.show(click);
   ui.showMapButton.show(click);
   ui.soundButton.show(click);
- //<>//
-  ui.mapCountLabel.setText("Maps:"+availableMaps) //<>// //<>//
-    .show(false); //<>//
+
+  ui.mapCountLabel.setText("Maps:"+availableMaps)
+    .show(false);
   ui.timeLabel.setText("Time:"+timeSpent+"s.")
     .show(false);
- //<>//
-  updateMain(); //<>//
+
+  moveBall();
+  updateMain();
   updateMap();
 
   if (ui.pauseButton.isClicked(click)) {
@@ -259,27 +300,16 @@ void updateMap() {
   pushMatrix();
   translate(ui.mapInnerX+mapShift+cellSize/2, ui.mapInnerY+mapShift+cellSize/2);
   box2d.step();
-  MapEntity pl;
 
-  for (int i = 0; i < cellsCount; i++) {
-    for (int j = 0; j < cellsCount; j++) {
-      MapEntity w = levelPatternEntities.get(i*cellsCount+j);
-      if (levelPattern.get(i)[j] == 1) {  // wall
-        w.setColor(150).display();
-      } else if (levelPattern.get(i)[j] == 2) {  // player
-        pl = w; 
-        w.setColor(color(255, 255, 0)).display();
-      } else if (levelPattern.get(i)[j] == 3) {  // exit
-        w.setColor(color(0, 255, 0)).display();
-      } else {  // empty
-        w.setColor(255).display();
-      }
-      //stroke(0);
-    }
+  for (MapEntity w : levelPatternWalls) {
+    w.display();
   }
+  pl.display();
+  ex.display();
+  //stroke(0);
   popMatrix();
-  
-  
+
+
   //pushMatrix();
   //translate(mapInnerX+mapShift, mapInnerY+mapShift);
   //for (int i = 0; i < cellsCount; i++) {
@@ -315,6 +345,38 @@ void soundButtonEvent() {
   sound = !sound;
 }
 
+
+
+
+void moveBall() {  
+  if (keyPressed) {
+    if (keyCode == UP) {
+      velocity = new Vec2(0,constrain(velocity.y+ballAcceleration, -ballMaxSpeed, ballMaxSpeed));
+    }
+    if (keyCode == RIGHT) {
+      velocity = new Vec2(constrain(velocity.x+ballAcceleration, -ballMaxSpeed, ballMaxSpeed),0);
+    }
+    if (keyCode == DOWN) {
+      velocity = new Vec2(0,constrain(velocity.y-ballAcceleration, -ballMaxSpeed, ballMaxSpeed));
+    }
+    if (keyCode == LEFT) {
+      velocity = new Vec2(constrain(velocity.x-ballAcceleration, -ballMaxSpeed, ballMaxSpeed),0);
+    }
+    pl.body.setLinearVelocity(velocity);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 void beginContact(Contact cp) {
   // Get both shapes
   Fixture f1 = cp.getFixtureA();
@@ -326,22 +388,25 @@ void beginContact(Contact cp) {
   // Get our objects that reference these bodies
   Object o1 = b1.getUserData();
   Object o2 = b2.getUserData();
-
-//  if (o1.getClass() == Particle.class && o2.getClass() == Particle.class) {
-//    Particle p1 = (Particle) o1;
-//    p1.delete();
-//    Particle p2 = (Particle) o2;
-//    p2.delete();
-//  }
-
-  if (o1.getClass() == Player.class) {
+  
+  if ((o1 == pl.body.getUserData()  &&  o2 == ex.body.getUserData())  ||  (o1 == ex.body.getUserData()  &&  o2 == pl.body.getUserData())) {
+    isWin = true;
+    isPause = true;
+  }
+  
+  if (o1 == pl.body.getUserData()) {
     MapEntity w = (MapEntity) o2;
     w.change();
-  }
-  if (o2.getClass() == Player.class) {
+    velocity = new Vec2(0,0);
+    pl.body.setLinearVelocity(velocity);
+  }  
+  if (o2 == pl.body.getUserData()) {
     MapEntity w = (MapEntity) o1;
     w.change();
+    velocity = new Vec2(0,0);
+    pl.body.setLinearVelocity(velocity);
   }
+  
 }
 
 void endContact(Contact cp) {
@@ -349,4 +414,11 @@ void endContact(Contact cp) {
 
 void mousePressed() {
   click = true;
+}
+
+void updateJson() {
+
+  println("\"updateJson\"");
+  println("  |--currentLevel: "+currentLevel);
+  println("  |--timeBest: "+timeBest);
 }
