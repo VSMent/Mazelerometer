@@ -23,17 +23,9 @@ class Controll {
   private String t; // controll text
   private float tS = 50; // text size
 
-  public int getWidth() {
-    return w;
-  }
-
   public Controll setWidth(int width) {
     this.w = width;
     return this;
-  }
-
-  public int getHeigth() {
-    return h;
   }
 
   public Controll setHeigth(int heigth) {
@@ -41,17 +33,9 @@ class Controll {
     return this;
   }
 
-  public int getX() {
-    return x;
-  }
-
   public Controll setX(int posX) {
     this.x = posX;
     return this;
-  }
-
-  public int getY() {
-    return y;
   }
 
   public Controll setY(int posY) {
@@ -59,26 +43,15 @@ class Controll {
     return this;
   }
 
-  public int getOutlineWidth() {
-    return ow;
-  }
-
   public Controll setOutlineWidth(int outlineWidth) {
     this.ow = outlineWidth;
     return this;
   }
 
-  public color getHoveredOutlineColor() {
-    return hOC;
-  }
-
+  // not in use hovered block
   public Controll setHoveredOutlineColor(color hoveredOutlineColor) {
     this.hOC = hoveredOutlineColor;
     return this;
-  }
-
-  public color getHoveredBodyColor() {
-    return hBC;
   }
 
   public Controll setHoveredBodyColor(color hoveredBodyColor) {
@@ -86,53 +59,33 @@ class Controll {
     return this;
   }
 
-  public color getHoveredTextColor() {
-    return hTC;
-  }
-
   public Controll setHoveredTextColor(color hoveredTextColor) {
     this.hTC = hoveredTextColor;
     return this;
   }
+  //  ---------------------
 
-  public color getOutlineColor() {
-    return oC;
-  }
-
+  // not in use normal state block
   public Controll setOutlineColor(color outlineColor) {
     this.oC = outlineColor;
     return this;
-  }
-
-  public color getBodyColor() {
-    return bC;
   }
 
   public Controll setBodyColor(color bodyColor) {
     this.bC = bodyColor;
     return this;
   }
-
-  public color getTextColor() {
-    return tC;
-  }
+  //  ---------------------
 
   public Controll setTextColor(color textColor) {
     this.tC = textColor;
     return this;
   }
 
-  public color getActiveOutlineColor() {
-    return aOC;
-  }
-
+  // not in use active block
   public Controll setActiveOutlineColor(color activeOutlineColor) {
     this.aOC = activeOutlineColor;
     return this;
-  }
-
-  public color getActiveBodyColor() {
-    return aBC;
   }
 
   public Controll setActiveBodyColor(color activeBodyColor) {
@@ -140,26 +93,15 @@ class Controll {
     return this;
   }
 
-  public color getActiveTextColor() {
-    return aTC;
-  }
-
   public Controll setActiveTextColor(color activeTextColor) {
     this.aTC = activeTextColor;
     return this;
   }
-
-  public String getText() {
-    return t;
-  }
+  //  ---------------------
 
   public Controll setText(String text) {
     this.t = text;
     return this;
-  }
-
-  public float getTextSize() {
-    return tS;
   }
 
   public Controll setTextSize(float textSize) {

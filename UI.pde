@@ -1,8 +1,7 @@
 class UI {
-  int border = 1; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+  int border = 1;
 
   int leftFullWidth, leftFullHeight, leftInnerWidth, leftInnerHeight, leftOuterX, leftInnerX, leftOuterY, leftInnerY, leftOutline;
-  int mainFullWidth, mainFullHeight, mainInnerWidth, mainInnerHeight, mainOuterX, mainInnerX, mainOuterY, mainInnerY, mainOutline;
   int mapFullWidth, mapFullHeight, mapInnerWidth, mapInnerHeight, mapOuterX, mapInnerX, mapOuterY, mapInnerY, mapOutline;
   int rightFullWidth, rightFullHeight, rightInnerWidth, rightInnerHeight, rightOuterX, rightInnerX, rightOuterY, rightInnerY, rightOutline;
 
@@ -156,20 +155,21 @@ class UI {
   }
 
   void drawGameScreen() {
-    drawBlock(0,false); // left
-    drawBlock(1,false); // main
-    drawBlock(2,false); // map
-    drawBlock(3,false); // right
+    drawBlock(0, false); // left
+    drawBlock(1, false); // map
+    drawBlock(2, false); // right
 
     // controll elements
-    int lVMargin = Math.round(leftInnerHeight/13);  // (left vertical margin) left 4 elements with 5 margins (element weight = 2, margin -- 1) 4*2 + 5*1 = 8 + 5 = 13
-    int lEHeight = lVMargin*2;  // left element height
-    int lHMargin = Math.round(leftInnerWidth/15);  // (left horizontal margin) 1 element with 2 margins (element weight = 1, margin -- 1.5) 1*1 + 2*1.5 = 1 + 3 = 4
+    int lVSize = Math.round(leftInnerHeight/7.0);  // (left vertical size) = 3 elements with 4 margins (element weight = 1, margin -- 1) 3*1 + 4*1 = 3 + 4 = 7
+    int lVMargin = lVSize;  // left vertical margin
+    int lEHeight = lVSize;  // left element height
+    int lHMargin = Math.round(leftInnerWidth/15);  // left horizontal margin
     int lEWidth = lHMargin*14;  // left element width
 
-    int rEHeight = lEHeight;
-    int rVMargin = Math.round((rightFullHeight-2*rEHeight)/3);  // right 2 elements with 3 margins (element weight = 2, margin -- 1) 2*2 + 3*1 = 4 + 3 = 7
-    int rHMargin = Math.round(rightInnerWidth/15);  // 1 element with 2 margins (element weight = 1, margin -- 1.5) 1*1 + 2*1.5 = 1 + 3 = 4
+    int rVSize = Math.round(rightInnerHeight/7.0);  // (right vertical size) = 3 elements with 4 margins (element weight = 1, margin -- 1) 3*1 + 4*1 = 3 + 4 = 7
+    int rVMargin = rVSize;
+    int rEHeight = rVSize;
+    int rHMargin = Math.round(rightInnerWidth/15);  // right horizontal margin
     int rEWidth = rHMargin*14;
 
     pauseButton.setWidth(lEWidth)
@@ -178,44 +178,44 @@ class UI {
       .setY(leftInnerY+lVMargin*1+lEHeight*0)
       .show(click);
 
-    showMapButton.setWidth(lEWidth)
+    soundButton.setWidth(lEWidth)
       .setHeigth(lEHeight)
       .setX(leftInnerX+lHMargin)
       .setY(leftInnerY+lVMargin*2+lEHeight*1)
       .show(click);
 
-    mapCountLabel.setWidth(lEWidth)
+    showMapButton.setWidth(lEWidth)
       .setHeigth(lEHeight)
       .setX(leftInnerX+lHMargin)
-      .setY(lVMargin*3+lEHeight*2)
-      .setText("Maps:"+availableMaps)
+      .setY(leftInnerY+lVMargin*3+lEHeight*2)
       .show(click);
 
-    timeLabel.setWidth(lEWidth)
-      .setHeigth(lEHeight)
-      .setX(leftInnerX+lHMargin)
-      .setY(lVMargin*4+lEHeight*3)
+    timeLabel.setWidth(rEWidth)
+      .setHeigth(rEHeight)
+      .setX(rightInnerX+rHMargin)
+      .setY(rVMargin*1+rEHeight*0)
       .setText("Time:"+timeSpent+"s.")
       .show(click);
 
-    bestLabel.setWidth(rEWidth)
-      .setHeigth(rEHeight)
-      .setX(rightInnerX+rHMargin)
-      .setY(rightInnerY+rVMargin*1+rEHeight*0)
+    bestLabel.setWidth(lEWidth)
+      .setHeigth(lEHeight)
+      .setX(rightInnerX+lHMargin)
+      .setY(rightInnerY+lVMargin*2+lEHeight*1)
       .setText("Best:"+timeBest+"s.")
       .show(click);
 
-    soundButton.setWidth(rEWidth)
+    mapCountLabel.setWidth(rEWidth)
       .setHeigth(rEHeight)
       .setX(rightInnerX+rHMargin)
-      .setY(rightInnerY+rVMargin*2+rEHeight*1)
+      .setY(rVMargin*3+rEHeight*2)
+      .setText("Maps:"+availableMaps)
       .show(click);
   }
 
   void initLeftBlock() {
     leftOutline = border;  // if want to change :-)
     leftFullWidth = (width - height)/2;
-    leftInnerWidth = leftFullWidth - leftOutline;  // left border = outline, right border from mainBlock
+    leftInnerWidth = leftFullWidth - leftOutline;  // left border = outline, right border from mapBlock
     leftFullHeight = height;
     leftInnerHeight = leftFullHeight - leftOutline*2;  // top and bottom borders are outline
     leftOuterX = 0;  // start of screen
@@ -224,26 +224,14 @@ class UI {
     leftInnerY = leftOuterY + leftOutline;  // outer + outline
   }
 
-  void initMainBlock() {
-    mainOutline = border;  // if want to change :-)
-    mainFullWidth = height;
-    mainInnerWidth = mainFullWidth - mainOutline*2;  // left and right borders = outline
-    mainFullHeight = height;
-    mainInnerHeight = mainFullHeight - mainOutline*2;  // top and bottom borders are outline
-    mainOuterX = leftFullWidth;  // after leftBlock
-    mainInnerX = mainOuterX + mainOutline;  // outer + outline
-    mainOuterY = 0;  // start of screen
-    mainInnerY = mainOuterY + mainOutline;  // outer + outline
-  }
-
   void initMapBlock() {
     mapOutline = border;  // if want to change :-)
-    mapFullWidth = (width - height)/2;
-    mapInnerWidth = mapFullWidth - mapOutline;  // left border from mainBlock, right border = outline
-    mapFullHeight = mapFullWidth + mapOutline;  // top otline, innerHeight, bottom outline
+    mapFullWidth = height;
+    mapInnerWidth = mapFullWidth - mapOutline*2;  // left border from rightBlock, right border = outline
+    mapFullHeight = height;  // top otline, innerHeight, bottom outline
     mapInnerHeight = mapFullHeight - mapOutline*2;  // top and bottom borders are outline 
-    mapOuterX = leftFullWidth + mainFullWidth;  // after main border
-    mapInnerX = mapOuterX;  // outer without outline (outline is right)
+    mapOuterX = leftFullWidth;  // after leftBlock
+    mapInnerX = mapOuterX + mapOutline;  // outer + outline
     mapOuterY = 0;  // start of screen
     mapInnerY = mapOuterY + mapOutline;  // outer + outline
   }
@@ -251,13 +239,13 @@ class UI {
   void initRightBlock() {
     rightOutline = border;  // if want to change :-)
     rightFullWidth = (width - height)/2;
-    rightInnerWidth = rightFullWidth - rightOutline;  // left border = outline, right border from mainBlock
-    rightFullHeight = height - mapFullHeight;  // share height with map
-    rightInnerHeight = rightFullHeight - rightOutline;  // top border from map, bottom border = outline
-    rightOuterX = leftFullWidth + mainFullWidth;  // after main border
+    rightInnerWidth = rightFullWidth - rightOutline;  // right border = outline, left border from mapBlock
+    rightFullHeight = height;  // height
+    rightInnerHeight = rightFullHeight - rightOutline*2;  // top border innerH. bottom border
+    rightOuterX = leftFullWidth + mapFullWidth;  // after map border
     rightInnerX = rightOuterX;  // outer without outline (outline is right)
-    rightOuterY = mapFullHeight;  // after map
-    rightInnerY = rightOuterY;  // outer (top outline from map)
+    rightOuterY = 0;  // start of the screen
+    rightInnerY = rightOuterY + rightOutline;  // outer + outline
   }
 
   void initControlls() {
@@ -359,11 +347,6 @@ class UI {
       rect(leftInnerX, leftInnerY, leftInnerWidth, leftInnerHeight);
     } else if (block == 1) {
       fill(0);
-      rect(mainOuterX, mainOuterY, mainFullWidth, mainFullHeight);
-      fill(255);
-      rect(mainInnerX, mainInnerY, mainInnerWidth, mainInnerHeight);
-    } else if (block == 2) {
-      fill(0);
       rect(mapOuterX, mapOuterY, mapFullWidth, mapFullHeight);
       if (useMap) {
         fill(170);
@@ -371,7 +354,7 @@ class UI {
         fill(150);
       }
       rect(mapInnerX, mapInnerY, mapInnerWidth, mapInnerHeight);
-    } else if (block == 3) {
+    } else if (block == 2) {
       fill(0);
       rect(rightOuterX, rightOuterY, rightFullWidth, rightFullHeight);
       fill(255);

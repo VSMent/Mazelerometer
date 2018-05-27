@@ -29,22 +29,17 @@ class MapEntity {
     return this;
   }
 
-
-  // Draw the boundary, if it were at an angle we'd have to do something fancier
   void display() {
     pos = box2d.getBodyPixelCoord(body);
-    //float a = body.getAngle();
     pushMatrix();
     pushStyle();
     translate(pos.x, pos.y);
-    //rotate(a);
     fill(col);
     strokeWeight(1);
     if (type == 2) {
       stroke(0);
-      ellipse(0, 0, w, h);     
+      ellipse(0, 0, w, h);
     } else {
-      //stroke(0);
       noStroke();
       rectMode(CENTER);
       rect(0, 0, w, h);
@@ -60,8 +55,8 @@ class MapEntity {
 
     if (type == 2) {
       bd.type = BodyType.DYNAMIC;
-      w -=5;
-      h -=5;
+      w -=4;
+      h -=4;
     } else {
       bd.type = BodyType.STATIC;
     }
@@ -90,8 +85,6 @@ class MapEntity {
 
     // Attach fixture to body
     body.createFixture(fd);
-
-    //body.setAngularVelocity(random(-10, 10));
   }
 
   MapEntity setColor(color c) {
