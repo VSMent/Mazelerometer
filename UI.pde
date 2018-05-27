@@ -1,5 +1,5 @@
 class UI {
-  int border = 1; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+  int border = 1;
 
   int leftFullWidth, leftFullHeight, leftInnerWidth, leftInnerHeight, leftOuterX, leftInnerX, leftOuterY, leftInnerY, leftOutline;
   int mapFullWidth, mapFullHeight, mapInnerWidth, mapInnerHeight, mapOuterX, mapInnerX, mapOuterY, mapInnerY, mapOutline;
