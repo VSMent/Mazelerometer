@@ -1,5 +1,5 @@
 class UI {
-  int border = 1; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+  int border = 1; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
   int leftFullWidth, leftFullHeight, leftInnerWidth, leftInnerHeight, leftOuterX, leftInnerX, leftOuterY, leftInnerY, leftOutline;
   int mapFullWidth, mapFullHeight, mapInnerWidth, mapInnerHeight, mapOuterX, mapInnerX, mapOuterY, mapInnerY, mapOutline;
@@ -155,19 +155,21 @@ class UI {
   }
 
   void drawGameScreen() {
-    drawBlock(0,false); // left
-    drawBlock(1,false); // map
-    drawBlock(2,false); // right
+    drawBlock(0, false); // left
+    drawBlock(1, false); // map
+    drawBlock(2, false); // right
 
     // controll elements
-    int lVMargin = Math.round(leftInnerHeight/13);  // (left vertical margin) left 4 elements with 5 margins (element weight = 2, margin -- 1) 4*2 + 5*1 = 8 + 5 = 13
-    int lEHeight = lVMargin*2;  // left element height
-    int lHMargin = Math.round(leftInnerWidth/15);  // (left horizontal margin) 1 element with 2 margins (element weight = 1, margin -- 1.5) 1*1 + 2*1.5 = 1 + 3 = 4
+    int lVSize = Math.round(leftInnerHeight/7.0);  // (left vertical size) = 3 elements with 4 margins (element weight = 1, margin -- 1) 3*1 + 4*1 = 3 + 4 = 7
+    int lVMargin = lVSize;  // left vertical margin
+    int lEHeight = lVSize;  // left element height
+    int lHMargin = Math.round(leftInnerWidth/15);  // left horizontal margin
     int lEWidth = lHMargin*14;  // left element width
 
-    int rEHeight = lEHeight;
-    int rVMargin = Math.round((rightFullHeight-2*rEHeight)/3);  // right 2 elements with 3 margins (element weight = 2, margin -- 1) 2*2 + 3*1 = 4 + 3 = 7
-    int rHMargin = Math.round(rightInnerWidth/15);  // 1 element with 2 margins (element weight = 1, margin -- 1.5) 1*1 + 2*1.5 = 1 + 3 = 4
+    int rVSize = Math.round(rightInnerHeight/7.0);  // (right vertical size) = 3 elements with 4 margins (element weight = 1, margin -- 1) 3*1 + 4*1 = 3 + 4 = 7
+    int rVMargin = rVSize;
+    int rEHeight = rVSize;
+    int rHMargin = Math.round(rightInnerWidth/15);  // right horizontal margin
     int rEWidth = rHMargin*14;
 
     pauseButton.setWidth(lEWidth)
@@ -176,38 +178,39 @@ class UI {
       .setY(leftInnerY+lVMargin*1+lEHeight*0)
       .show(click);
 
-    showMapButton.setWidth(lEWidth)
+    soundButton.setWidth(lEWidth)
       .setHeigth(lEHeight)
       .setX(leftInnerX+lHMargin)
       .setY(leftInnerY+lVMargin*2+lEHeight*1)
       .show(click);
 
-    mapCountLabel.setWidth(lEWidth)
+    showMapButton.setWidth(lEWidth)
       .setHeigth(lEHeight)
       .setX(leftInnerX+lHMargin)
-      .setY(lVMargin*3+lEHeight*2)
-      .setText("Maps:"+availableMaps)
+      .setY(leftInnerY+lVMargin*3+lEHeight*2)
       .show(click);
 
-    timeLabel.setWidth(lEWidth)
-      .setHeigth(lEHeight)
-      .setX(leftInnerX+lHMargin)
-      .setY(lVMargin*4+lEHeight*3)
+    timeLabel.setWidth(rEWidth)
+      .setHeigth(rEHeight)
+      .setX(rightInnerX+rHMargin)
+      .setY(rVMargin*1+rEHeight*0)
       .setText("Time:"+timeSpent+"s.")
       .show(click);
 
-    bestLabel.setWidth(rEWidth)
-      .setHeigth(rEHeight)
-      .setX(rightInnerX+rHMargin)
-      .setY(rightInnerY+rVMargin*1+rEHeight*0)
+    bestLabel.setWidth(lEWidth)
+      .setHeigth(lEHeight)
+      .setX(rightInnerX+lHMargin)
+      .setY(rightInnerY+lVMargin*2+lEHeight*1)
       .setText("Best:"+timeBest+"s.")
       .show(click);
 
-    soundButton.setWidth(rEWidth)
+    mapCountLabel.setWidth(rEWidth)
       .setHeigth(rEHeight)
       .setX(rightInnerX+rHMargin)
-      .setY(rightInnerY+rVMargin*2+rEHeight*1)
+      .setY(rVMargin*3+rEHeight*2)
+      .setText("Maps:"+availableMaps)
       .show(click);
+
   }
 
   void initLeftBlock() {
