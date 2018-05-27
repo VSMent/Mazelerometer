@@ -40,16 +40,14 @@ boolean sound = true, click = false, useMap = true;
 
 void setup() {
   orientation(LANDSCAPE);
-  //fullScreen();
-  size(960, 540);
-  //size(480,270);
+  fullScreen();
   background(255);
   init();
 }
 
 void init() {
-  //sensor = new KetaiSensor(this);
-  //sensor.start();
+  sensor = new KetaiSensor(this);
+  sensor.start();
   noStroke();
   ui = new UI();
   ui.border = Math.round(height * .00625);
@@ -86,7 +84,6 @@ void init() {
 }
 
 void draw() {
-  // box2d.step();
   if (isStart) {  // start screen
     startScreen();
   } else if (isInfo) {  // info screen
@@ -138,7 +135,6 @@ void helpButtonEvent() {
 }
 void exitButtonEvent() {
   System.exit(0);
-  //exit();
 }
 
 void  infoScreen(int type) {
@@ -366,13 +362,6 @@ void moveBall() {
     }
     pl.body.setLinearVelocity(velocity);
   }
-
-  // println("ballMaxSpeed: "+ballMaxSpeed,"ballAcceleration: "+ballAcceleration);
-  // println("velocity.x: "+velocity.x,"velocity.y: "+velocity.y);
-  //  textSize(32);
-  //text(accelerometerX, width/2, 50); 
-  //text(accelerometerY, width/2, 200);
-  //text(accelerometerZ, width/2, 300); 
 
   if (Math.abs(accelerometerX)>1) {
     float accY = accelerometerX*2;  
