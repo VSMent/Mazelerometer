@@ -86,7 +86,6 @@ void init() {
   ui.initControlls();
 
   ui.initLeftBlock();
-  ui.initMainBlock();
   ui.initMapBlock();
   ui.initRightBlock();
 }
@@ -307,7 +306,6 @@ void updateGameScreen() {
   ui.timeLabel.setText("Time:"+timeSpent+"s.")
     .show(false);
 
-  updateMain();
   updateMap();
 
   if (ui.pauseButton.isClicked(click)) {
@@ -321,13 +319,8 @@ void updateGameScreen() {
   }
 }
 
-void updateMain() {
-  ui.drawBlock(1,false);
-  player.display();
-}
-
 void updateMap() {
-  ui.drawBlock(2,useMap);
+  ui.drawBlock(1,useMap);
   moveBall();
   pushMatrix();
   translate(ui.mapInnerX+mapShift+cellSize/2, ui.mapInnerY+mapShift+cellSize/2);

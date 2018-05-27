@@ -2,7 +2,6 @@ class UI {
   int border = 1; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 
   int leftFullWidth, leftFullHeight, leftInnerWidth, leftInnerHeight, leftOuterX, leftInnerX, leftOuterY, leftInnerY, leftOutline;
-  int mainFullWidth, mainFullHeight, mainInnerWidth, mainInnerHeight, mainOuterX, mainInnerX, mainOuterY, mainInnerY, mainOutline;
   int mapFullWidth, mapFullHeight, mapInnerWidth, mapInnerHeight, mapOuterX, mapInnerX, mapOuterY, mapInnerY, mapOutline;
   int rightFullWidth, rightFullHeight, rightInnerWidth, rightInnerHeight, rightOuterX, rightInnerX, rightOuterY, rightInnerY, rightOutline;
 
@@ -157,9 +156,8 @@ class UI {
 
   void drawGameScreen() {
     drawBlock(0,false); // left
-    drawBlock(1,false); // main
-    drawBlock(2,false); // map
-    drawBlock(3,false); // right
+    drawBlock(1,false); // map
+    drawBlock(2,false); // right
 
     // controll elements
     int lVMargin = Math.round(leftInnerHeight/13);  // (left vertical margin) left 4 elements with 5 margins (element weight = 2, margin -- 1) 4*2 + 5*1 = 8 + 5 = 13
@@ -215,7 +213,7 @@ class UI {
   void initLeftBlock() {
     leftOutline = border;  // if want to change :-)
     leftFullWidth = (width - height)/2;
-    leftInnerWidth = leftFullWidth - leftOutline;  // left border = outline, right border from mainBlock
+    leftInnerWidth = leftFullWidth - leftOutline;  // left border = outline, right border from mapBlock
     leftFullHeight = height;
     leftInnerHeight = leftFullHeight - leftOutline*2;  // top and bottom borders are outline
     leftOuterX = 0;  // start of screen
@@ -224,25 +222,13 @@ class UI {
     leftInnerY = leftOuterY + leftOutline;  // outer + outline
   }
 
-  void initMainBlock() {
-    mainOutline = border;  // if want to change :-)
-    mainFullWidth = height;
-    mainInnerWidth = mainFullWidth - mainOutline*2;  // left and right borders = outline
-    mainFullHeight = height;
-    mainInnerHeight = mainFullHeight - mainOutline*2;  // top and bottom borders are outline
-    mainOuterX = leftFullWidth;  // after leftBlock
-    mainInnerX = mainOuterX + mainOutline;  // outer + outline
-    mainOuterY = 0;  // start of screen
-    mainInnerY = mainOuterY + mainOutline;  // outer + outline
-  }
-
   void initMapBlock() {
     mapOutline = border;  // if want to change :-)
     mapFullWidth = (width - height)/2;
-    mapInnerWidth = mapFullWidth - mapOutline;  // left border from mainBlock, right border = outline
+    mapInnerWidth = mapFullWidth - mapOutline;  // left border from rightBlock, right border = outline
     mapFullHeight = mapFullWidth + mapOutline;  // top otline, innerHeight, bottom outline
     mapInnerHeight = mapFullHeight - mapOutline*2;  // top and bottom borders are outline 
-    mapOuterX = leftFullWidth + mainFullWidth;  // after main border
+    mapOuterX = leftFullWidth;  // after left border
     mapInnerX = mapOuterX;  // outer without outline (outline is right)
     mapOuterY = 0;  // start of screen
     mapInnerY = mapOuterY + mapOutline;  // outer + outline
@@ -251,10 +237,10 @@ class UI {
   void initRightBlock() {
     rightOutline = border;  // if want to change :-)
     rightFullWidth = (width - height)/2;
-    rightInnerWidth = rightFullWidth - rightOutline;  // left border = outline, right border from mainBlock
+    rightInnerWidth = rightFullWidth - rightOutline;  // left border = outline, right border from mapBlock
     rightFullHeight = height - mapFullHeight;  // share height with map
     rightInnerHeight = rightFullHeight - rightOutline;  // top border from map, bottom border = outline
-    rightOuterX = leftFullWidth + mainFullWidth;  // after main border
+    rightOuterX = leftFullWidth + mapFullWidth;  // after map border
     rightInnerX = rightOuterX;  // outer without outline (outline is right)
     rightOuterY = mapFullHeight;  // after map
     rightInnerY = rightOuterY;  // outer (top outline from map)
@@ -359,11 +345,6 @@ class UI {
       rect(leftInnerX, leftInnerY, leftInnerWidth, leftInnerHeight);
     } else if (block == 1) {
       fill(0);
-      rect(mainOuterX, mainOuterY, mainFullWidth, mainFullHeight);
-      fill(255);
-      rect(mainInnerX, mainInnerY, mainInnerWidth, mainInnerHeight);
-    } else if (block == 2) {
-      fill(0);
       rect(mapOuterX, mapOuterY, mapFullWidth, mapFullHeight);
       if (useMap) {
         fill(170);
@@ -371,7 +352,7 @@ class UI {
         fill(150);
       }
       rect(mapInnerX, mapInnerY, mapInnerWidth, mapInnerHeight);
-    } else if (block == 3) {
+    } else if (block == 2) {
       fill(0);
       rect(rightOuterX, rightOuterY, rightFullWidth, rightFullHeight);
       fill(255);
