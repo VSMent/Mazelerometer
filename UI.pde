@@ -224,12 +224,12 @@ class UI {
 
   void initMapBlock() {
     mapOutline = border;  // if want to change :-)
-    mapFullWidth = (width - height)/2;
-    mapInnerWidth = mapFullWidth - mapOutline;  // left border from rightBlock, right border = outline
-    mapFullHeight = mapFullWidth + mapOutline;  // top otline, innerHeight, bottom outline
+    mapFullWidth = height;
+    mapInnerWidth = mapFullWidth - mapOutline*2;  // left border from rightBlock, right border = outline
+    mapFullHeight = height;  // top otline, innerHeight, bottom outline
     mapInnerHeight = mapFullHeight - mapOutline*2;  // top and bottom borders are outline 
-    mapOuterX = leftFullWidth;  // after left border
-    mapInnerX = mapOuterX;  // outer without outline (outline is right)
+    mapOuterX = leftFullWidth;  // after leftBlock
+    mapInnerX = mapOuterX + mapOutline;  // outer + outline
     mapOuterY = 0;  // start of screen
     mapInnerY = mapOuterY + mapOutline;  // outer + outline
   }
@@ -237,13 +237,13 @@ class UI {
   void initRightBlock() {
     rightOutline = border;  // if want to change :-)
     rightFullWidth = (width - height)/2;
-    rightInnerWidth = rightFullWidth - rightOutline;  // left border = outline, right border from mapBlock
-    rightFullHeight = height - mapFullHeight;  // share height with map
-    rightInnerHeight = rightFullHeight - rightOutline;  // top border from map, bottom border = outline
+    rightInnerWidth = rightFullWidth - rightOutline;  // right border = outline, left border from mapBlock
+    rightFullHeight = height;  // height
+    rightInnerHeight = rightFullHeight - rightOutline*2;  // top border innerH. bottom border
     rightOuterX = leftFullWidth + mapFullWidth;  // after map border
     rightInnerX = rightOuterX;  // outer without outline (outline is right)
-    rightOuterY = mapFullHeight;  // after map
-    rightInnerY = rightOuterY;  // outer (top outline from map)
+    rightOuterY = 0;  // start of the screen
+    rightInnerY = rightOuterY + rightOutline;  // outer + outline
   }
 
   void initControlls() {

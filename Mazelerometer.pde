@@ -1,4 +1,4 @@
-import ketai.sensors.*;  //<>//
+import ketai.sensors.*;  //<>// //<>//
 
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
@@ -19,7 +19,6 @@ Box2DProcessing box2d;
 
 MapEntity ex;
 MapEntity pl;
-Player player;
 
 JSONObject maze;
 JSONArray levels;
@@ -81,8 +80,6 @@ void init() {
   box2d.listenForCollisions();
   box2d.setGravity(0, 0);
 
-  player = new Player(width/2, height/2, 100);
-
   ui.initControlls();
 
   ui.initLeftBlock();
@@ -136,20 +133,20 @@ void updateStartScreen() {
 }
 void playButtonEvent() { //<>//
   isStart = false; //<>//
-} //<>//
-void helpButtonEvent() {
-  isStart = false;
+} //<>// //<>//
+void helpButtonEvent() { //<>//
+  isStart = false; //<>//
   isInfo = true; //<>//
 } //<>//
-void exitButtonEvent() { //<>//
-  System.exit(0); //<>//
-  //exit();
-} //<>//
+void exitButtonEvent() { //<>// //<>//
+  System.exit(0); //<>// //<>//
+  //exit(); //<>//
+} //<>// //<>//
  //<>//
-void  infoScreen(int type) { //<>//
-  if (currentScreen != "info") { //<>//
-    currentScreen = "info";
-    ui.drawInfoScreen(type);
+void  infoScreen(int type) { //<>// //<>//
+  if (currentScreen != "info") { //<>// //<>//
+    currentScreen = "info"; //<>//
+    ui.drawInfoScreen(type); //<>//
   }
   updateInfoScreen();
 }
@@ -191,10 +188,10 @@ void updatePauseScreen(int type) {
   ui.pauseExitButton.show(click);
  //<>//
  //<>//
-  if (ui.pauseSoundButton.isClicked(click)) {  // need to check back or exit //<>//
-    pauseSoundButtonEvent(); //<>//
-  }
-  if (ui.pauseNextButton.isClicked(click)) {  // need to check back or exit
+  if (ui.pauseSoundButton.isClicked(click)) {  // need to check back or exit //<>// //<>//
+    pauseSoundButtonEvent(); //<>// //<>//
+  } //<>//
+  if (ui.pauseNextButton.isClicked(click)) {  // need to check back or exit //<>//
     pauseNextButtonEvent();
   }
   if (ui.pauseExitButton.isClicked(click)) {  // need to check back or exit
@@ -203,21 +200,21 @@ void updatePauseScreen(int type) {
 }
  //<>//
 void pauseSoundButtonEvent() { //<>//
-  sound = !sound; //<>//
-} //<>//
-void pauseNextButtonEvent() {
-  if (isWin) {
+  sound = !sound; //<>// //<>//
+} //<>// //<>//
+void pauseNextButtonEvent() { //<>//
+  if (isWin) { //<>//
     if (currentLevel>=levels.size()) { //<>//
       currentLevel=1; //<>//
-    } else { //<>//
-      currentLevel++; //<>//
-    } //<>//
-    timeSpent = 0; //<>//
-    timeBest = 0; //<>//
-    hitWalls = new ArrayList(); //<>//
-    isWin = false; //<>//
-  }
-  isPause = false;
+    } else { //<>// //<>//
+      currentLevel++; //<>// //<>//
+    } //<>// //<>//
+    timeSpent = 0; //<>// //<>//
+    timeBest = 0; //<>// //<>//
+    hitWalls = new ArrayList(); //<>// //<>//
+    isWin = false; //<>// //<>//
+  } //<>//
+  isPause = false; //<>//
 }
 void pauseExitButtonEvent() {
   System.exit(0);
@@ -225,20 +222,20 @@ void pauseExitButtonEvent() {
 
 void gameScreen() { //<>//
   if (currentScreen != "game") { //<>//
-    currentScreen = "game"; //<>//
+    currentScreen = "game"; //<>// //<>//
+ //<>// //<>//
+    timeNow = millis(); //<>//
  //<>//
-    timeNow = millis();
-
     loadLevel(); //<>//
  //<>//
-    ui.drawGameScreen(); //<>//
-  }
-  updateGameScreen();
+    ui.drawGameScreen(); //<>// //<>//
+  } //<>//
+  updateGameScreen(); //<>//
 } //<>//
  //<>//
-void loadLevel() { //<>//
-  if (pl != null) {    
-    pl.killBody();
+void loadLevel() { //<>// //<>//
+  if (pl != null) {     //<>//
+    pl.killBody(); //<>//
     ex.killBody();
     for (MapEntity e : levelPatternWalls) {
       e.killBody();
