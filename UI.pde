@@ -210,7 +210,6 @@ class UI {
       .setY(rVMargin*3+rEHeight*2)
       .setText("Maps:"+availableMaps)
       .show(click);
-
   }
 
   void initLeftBlock() {

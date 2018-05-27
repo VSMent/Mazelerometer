@@ -180,8 +180,8 @@ void updatePauseScreen(int type) {
   ui.pauseSoundButton.show(click);
   ui.pauseNextButton.show(click);
   ui.pauseExitButton.show(click);
- 
- 
+
+
   if (ui.pauseSoundButton.isClicked(click)) {  // need to check back or exit
     pauseSoundButtonEvent();
   }
@@ -217,11 +217,11 @@ void pauseExitButtonEvent() {
 void gameScreen() {
   if (currentScreen != "game") {
     currentScreen = "game";
-   
+
     timeNow = millis();
-   
+
     loadLevel();
-   
+
     ui.drawGameScreen();
   }
   updateGameScreen();
@@ -363,17 +363,12 @@ void moveBall() {
     pl.body.setLinearVelocity(velocity);
   }
 
-  if (Math.abs(accelerometerX)>1) {
+  if (Math.abs(accelerometerX)>1  ||  Math.abs(accelerometerY)>1) {
     float accY = accelerometerX*2;  
-    velocity = new Vec2(
-      0, constrain(velocity.y-accY, -ballMaxSpeed, ballMaxSpeed)
-      );
-    pl.body.setLinearVelocity(velocity);
-  }
-  if (Math.abs(accelerometerY)>1) {
     float accX = accelerometerY*2;  
     velocity = new Vec2(
-      constrain(velocity.x+accX, -ballMaxSpeed, ballMaxSpeed), 0
+      constrain(velocity.x+accX, -ballMaxSpeed, ballMaxSpeed), 
+      constrain(velocity.y-accY, -ballMaxSpeed, ballMaxSpeed)
       );
     pl.body.setLinearVelocity(velocity);
   }

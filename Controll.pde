@@ -47,7 +47,7 @@ class Controll {
     this.ow = outlineWidth;
     return this;
   }
-  
+
   // not in use hovered block
   public Controll setHoveredOutlineColor(color hoveredOutlineColor) {
     this.hOC = hoveredOutlineColor;
@@ -64,7 +64,7 @@ class Controll {
     return this;
   }
   //  ---------------------
-  
+
   // not in use normal state block
   public Controll setOutlineColor(color outlineColor) {
     this.oC = outlineColor;
@@ -81,7 +81,7 @@ class Controll {
     this.tC = textColor;
     return this;
   }
-  
+
   // not in use active block
   public Controll setActiveOutlineColor(color activeOutlineColor) {
     this.aOC = activeOutlineColor;
